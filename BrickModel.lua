@@ -40,7 +40,7 @@ function BrickModel:create()
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)
     self._fixture:setCategory(3)
-    self._fixture:setMask(3)
+    self._fixture:setMask(2, 3)
     self._fixture:setUserData({model = self})
 end
 
@@ -52,7 +52,7 @@ end
 function BrickModel:update(dt)
     if self._broken and self._body:getType() == "static" then
         self._body:setType("dynamic")
-        self._fixture:setMask(3, 4)
+        self._fixture:setMask(2, 3, 4)
     end
 
     local x, y = self._body:getPosition()

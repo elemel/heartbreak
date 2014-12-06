@@ -15,7 +15,7 @@ function love.load()
 
     game = Game.new({
         cameraScale = 0.1,
-        gravity = {0, -10},
+        gravity = {0, -5},
     })
     game:setWorldViewEnabled(true)
 
@@ -72,4 +72,11 @@ end
 
 function love.draw()
     game:draw()
+end
+
+function love.keypressed(key, isrepeat)
+    if key == "return" and not isrepeat then
+        local screenshot = love.graphics.newScreenshot()
+        screenshot:encode("heartbreak-screenshot.png")
+    end
 end

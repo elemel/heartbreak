@@ -89,6 +89,7 @@ function PaddleModel:update(dt)
     end
 
     self._body:setPosition(x, y)
+    self._body:setLinearVelocity(dx, dy)
     self._linearVelocity = {dx, dy}
 end
 

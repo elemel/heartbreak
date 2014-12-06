@@ -32,12 +32,14 @@ function BallModel:create()
     self._body = love.physics.newBody(world, x, y, "dynamic")
     self._body:setLinearVelocity(unpack(config.linearVelocity or {0, 0}))
     self._body:setFixedRotation(true)
+    self._body:setGravityScale(0)
 
     local radius = config.radius or 1
     local shape = love.physics.newCircleShape(0, 0, radius)
     self._fixture = love.physics.newFixture(self._body, shape)
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)
+    self._fixture:setCategory(4)
 end
 
 function BallModel:destroy()

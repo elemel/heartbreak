@@ -1,3 +1,5 @@
+local math1D = require "heart.math1D"
+
 local PaddleModel = {}
 PaddleModel.__index = PaddleModel
 
@@ -31,54 +33,30 @@ function PaddleModel:create()
     local torque = self._config.torque or 1
     local density = self._config.density or 1
     local x, y = unpack(config.position or {0, 0})
-    local width, height = unpack(config.size or {1, 1})
-    local radius = 0.5 * math.min(width, height)
-    local friction = config.friction or 1
-    local restitution = config.resititon or 1
+    local radius = config.radius or 1
+    local friction = config.friction or 0
+    local restitution = config.restitution or 1
 
-    self._groundBody = love.physics.newBody(world, 0, 0, "static")
+    self._linearVelocity = {0, 0}
 
-    self._prismaticBody = love.physics.newBody(world, x, y, "dynamic")
+    self._body = love.physics.newBody(world, x, y, "static")
 
-    local prismaticShape = love.physics.newCircleShape(radius)
-    self._prismaticFixture = love.physics.newFixture(self._prismaticBody, prismaticShape, density)
-    self._prismaticFixture:setFriction(friction)
-    self._prismaticFixture:setRestitution(restitution)
-
-    self._prismaticJoint = love.physics.newPrismaticJoint(self._groundBody, self._prismaticBody, x, y, 1, 0)
-    self._prismaticJoint:setMotorEnabled(true)
-    self._prismaticJoint:setMaxMotorForce(force)
-    self._prismaticJoint:setLimitsEnabled(false)
-
-    self._revoluteBody = love.physics.newBody(world, x, y, "dynamic")
-
-    local revoluteShape = love.physics.newRectangleShape(width, height)
-    self._revoluteFixture = love.physics.newFixture(self._revoluteBody, revoluteShape, density)
-    self._revoluteFixture:setFriction(friction)
-    self._revoluteFixture:setRestitution(restitution)
-    self._revoluteFixture:setMask(2)
-
-    self._revoluteJoint = love.physics.newRevoluteJoint(self._prismaticBody, self._revoluteBody, x, y)
-    self._revoluteJoint:setMotorEnabled(true)
-    self._revoluteJoint:setMaxMotorTorque(torque)
-    self._prismaticJoint:setLimitsEnabled(false)
+    local shape = love.physics.newCircleShape(radius)
+    self._fixture = love.physics.newFixture(self._body, shape, density)
+    self._fixture:setFriction(friction)
+    self._fixture:setRestitution(restitution)
 end
 
 function PaddleModel:destroy()
-    self._revoluteJoint:destroy()
-    self._revoluteFixture:destroy()
-    self._revoluteBody:destroy()
-
-    self._prismaticJoint:destroy()
-    self._prismaticFixture:destroy()
-    self._prismaticBody:destroy()
-
-    self._groundBody:destroy()
+    self._fixture:destroy()
+    self._body:destroy()
 end
 
 function PaddleModel:update(dt)
-    local maxLinearVelocity = self._config.maxLinearVelocity or 1
-    local maxAngularVelocity = self._config.maxAngularVelocity or 1
+    local config = self._config
+    local linearAcceleration = config.linearAcceleration or 1
+    local maxLinearVelocity = config.maxLinearVelocity or 1
+    local x1, y1, x2, y2 = unpack(config.positionBounds or {-1, -1, 1, 1})
 
     local upInput = love.keyboard.isDown("up")
     local leftInput = love.keyboard.isDown("left")
@@ -88,8 +66,30 @@ function PaddleModel:update(dt)
     local inputX = (rightInput and 1 or 0) - (leftInput and 1 or 0)
     local inputY = (upInput and 1 or 0) - (downInput and 1 or 0)
 
-    self._prismaticJoint:setMotorSpeed(inputX * maxLinearVelocity)
-    self._revoluteJoint:setMotorSpeed(inputY * maxAngularVelocity)
+    local x, y = self._body:getPosition()
+    local dx, dy = unpack(self._linearVelocity)
+
+    if inputX ~= 0 then
+        dx = dx + inputX * linearAcceleration * dt
+        dx = math1D.sign(dx) * math.min(math.abs(dx), maxLinearVelocity)
+    else
+        dx = math1D.sign(dx) * math.max(math.abs(dx) - linearAcceleration * dt, 0)
+    end
+
+    x = x + dx * dt
+    y = y + dy * dt
+
+    if x < x1 then
+        x = x1
+        dx = math.max(dx, 0)
+    end
+    if x > x2 then
+        x = x2
+        dx = math.min(dx, 0)
+    end
+
+    self._body:setPosition(x, y)
+    self._linearVelocity = {dx, dy}
 end
 
 return PaddleModel

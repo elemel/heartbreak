@@ -29,12 +29,11 @@ function love.load()
     })
 
     game:newModel("paddle", {
-        size = {3, 1},
-        position = {0, -8.5},
-        force = 500,
-        torque = 100,
-        maxLinearVelocity = 10,
-        maxAngularVelocity = 5,
+        radius = 1,
+        position = {0, -9.5},
+        linearAcceleration = 50,
+        maxLinearVelocity = 20,
+        positionBounds = {-8, 0, 8, 0},
     })
 
     game:newModel("ball", {

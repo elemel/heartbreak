@@ -4,6 +4,8 @@ local PaddleModel = require "PaddleModel"
 local WallModel = require "WallModel"
 
 function love.load()
+    love.physics.setMeter(1)
+
     game = Game.new({
         cameraScale = 0.1,
     })
@@ -29,8 +31,14 @@ function love.load()
     game:newModel("paddle", {
         size = {3, 1},
         position = {0, -9.5},
+        force = 1000,
+        speed = 10,
     })
-    game:newModel("ball", {radius = 0.5})
+
+    game:newModel("ball", {
+        linearVelocity = {5, 10},
+        radius = 0.5,
+    })
 end
 
 function love.update(dt)

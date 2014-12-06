@@ -34,6 +34,8 @@ function WallModel:create()
     local width, height = unpack(config.size or {1, 1})
     local shape = love.physics.newRectangleShape(width, height)
     self._fixture = love.physics.newFixture(self._body, shape)
+    self._fixture:setFriction(config.friction or 0)
+    self._fixture:setRestitution(config.restitution or 1)
 end
 
 function WallModel:destroy()

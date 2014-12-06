@@ -8,6 +8,10 @@ local WallModel = require "WallModel"
 function love.load()
     love.physics.setMeter(1)
 
+    love.window.setMode(800, 600, {
+        resizable = true,
+    })
+
     game = Game.new({
         cameraScale = 0.1,
         gravity = {0, -10},

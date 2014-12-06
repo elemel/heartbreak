@@ -53,11 +53,12 @@ end
 function BallModel:update(dt)
     local minLinearVelocity = self._config.minLinearVelocity or 0
     local maxLinearVelocity = self._config.maxLinearVelocity or 1
-    local minLinearVelocityComponent = self._config.minLinearVelocityComponent or 1
+    local minLinearVelocityX = self._config.minLinearVelocityX or 0
+    local minLinearVelocityY = self._config.minLinearVelocityY or 0
 
     local dx, dy = self._body:getLinearVelocity()
-    dx = math1D.sign(dx) * math.max(math.abs(dx), minLinearVelocityComponent)
-    dy = math1D.sign(dy) * math.max(math.abs(dy), minLinearVelocityComponent)
+    dx = math1D.sign(dx) * math.max(math.abs(dx), minLinearVelocityX)
+    dy = math1D.sign(dy) * math.max(math.abs(dy), minLinearVelocityY)
 
     local directionX, directionY, length = math2D.normalize(dx, dy)
     length = math1D.clamp(length, minLinearVelocity, maxLinearVelocity)

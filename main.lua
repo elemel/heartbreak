@@ -40,10 +40,11 @@ function love.load()
     local z = 1000 * love.math.random()
     local frequency = 0.2
     for y = 0, 7 do
-        for x = -8, 7 do
-            if math3D.fbm(frequency * x, frequency * y, z) > 0.5 then
+        for x = -8, 7, 2 do
+            if math3D.fbm(frequency * (x + 1), frequency * (y + 0.5), z) > 0.5 then
                 game:newModel("brick", {
-                    position = {x + 0.5, y + 0.5},
+                    size = {2, 1},
+                    position = {x + 1, y + 0.5},
                     restitution = 0.75,
                 })
             end
@@ -61,7 +62,10 @@ function love.load()
 
     game:newModel("ball", {
         position = {0, -7.5},
-        linearVelocity = {5, 5},
+        linearVelocity = {love.math.random() - 0.5, 1},
+        minLinearVelocity = 10,
+        maxLinearVelocity = 10,
+        minLinearVelocityY = 2,
         radius = 0.5,
     })
 end

@@ -36,6 +36,7 @@ function WallModel:create()
     self._fixture = love.physics.newFixture(self._body, shape)
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)
+    self._fixture:setCategory(2)
 end
 
 function WallModel:destroy()

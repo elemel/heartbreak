@@ -6,11 +6,12 @@ local PaddleModel = require "PaddleModel"
 local WallModel = require "WallModel"
 
 function love.load()
-    love.physics.setMeter(1)
-
     love.window.setMode(800, 600, {
         resizable = true,
     })
+    love.window.setTitle("Heartbreak")
+
+    love.physics.setMeter(1)
 
     game = Game.new({
         cameraScale = 0.1,
@@ -24,22 +25,22 @@ function love.load()
     game:setModelCreator("wall", WallModel.new)
 
     game:newModel("wall", {
-        size = {20, 1},
-        position = {0, 9.5},
+        size = {20, 2},
+        position = {0, 9},
     })
     game:newModel("wall", {
-        size = {1, 20},
-        position = {-9.5, 0},
+        size = {2, 20},
+        position = {-9, 0},
     })
     game:newModel("wall", {
-        size = {1, 20},
-        position = {9.5, 0},
+        size = {2, 20},
+        position = {9, 0},
     })
 
     local z = 1000 * love.math.random()
     local frequency = 0.2
-    for y = 0, 8 do
-        for x = -9, 8 do
+    for y = 0, 7 do
+        for x = -8, 7 do
             if math3D.fbm(frequency * x, frequency * y, z) > 0.5 then
                 game:newModel("brick", {
                     position = {x + 0.5, y + 0.5},
@@ -50,16 +51,17 @@ function love.load()
     end
 
     game:newModel("paddle", {
-        radius = 1.5,
-        position = {0, -10},
+        radius = 1,
+        position = {0, -9},
         linearAcceleration = 50,
         maxLinearVelocity = 20,
-        positionBounds = {-9, 0, 9, 0},
+        positionBounds = {-8, 0, 8, 0},
         restitution = 0.75,
     })
 
     game:newModel("ball", {
-        linearVelocity = {5, 10},
+        position = {0, -7.5},
+        linearVelocity = {5, 5},
         radius = 0.5,
     })
 end

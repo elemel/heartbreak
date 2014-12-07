@@ -28,14 +28,20 @@ function love.load()
     game:newModel("wall", {
         size = {20, 2},
         position = {0, 9},
+        friction = 0.5,
+        restitution = 0.5,
     })
     game:newModel("wall", {
         size = {2, 20},
         position = {-9, 0},
+        friction = 0.5,
+        restitution = 0.5,
     })
     game:newModel("wall", {
         size = {2, 20},
         position = {9, 0},
+        friction = 0.5,
+        restitution = 0.5,
     })
 
     local z = 1000 * love.math.random()
@@ -46,7 +52,8 @@ function love.load()
                 game:newModel("brick", {
                     size = {2, 1},
                     position = {x + 1, y + 0.5},
-                    restitution = 0.75,
+                    friction = 0.5,
+                    restitution = 0.5,
                 })
             end
         end
@@ -58,16 +65,20 @@ function love.load()
         linearAcceleration = 50,
         maxLinearVelocity = 20,
         positionBounds = {-8, 0, 8, 0},
-        restitution = 0.75,
+        friction = 0.5,
+        restitution = 0.5,
     })
 
     game:newModel("ball", {
-        position = {0, -7.5},
-        linearVelocity = {love.math.random() - 0.5, 1},
+        position = {15 * love.math.random() - 7.5, -10.5},
+        linearVelocity = {1 - 2 * love.math.random(), 1},
         minLinearVelocity = 10,
         maxLinearVelocity = 10,
+        minLinearVelocityX = 2,
         minLinearVelocityY = 2,
         radius = 0.5,
+        friction = 0.5,
+        restitution = 0.5,
     })
 end
 

@@ -68,7 +68,7 @@ function BallModel:update(dt)
     end
 
     if self._spawning and y > -7.5 then
-        self._fixture:setMask()
+        self._fixture:setMask(4)
 
         self._spawning = false
     end

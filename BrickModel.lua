@@ -64,6 +64,7 @@ end
 function BrickModel:update(dt)
     local x, y = self._body:getPosition()
     if y < -10 then
+        self:_addScore(1)
         self._game:removeModel(self)
         return
     end
@@ -78,7 +79,7 @@ function BrickModel:update(dt)
                     position = {self._body:getWorldPoint(-0.25 * width, 0)},
                     angle = self._body:getAngle(),
                     linearVelocity = {self._body:getLinearVelocityFromLocalPoint(-0.25 * width, 0)},
-                    angularVelocity = self._body:getAngularVelocity(),
+                    angularVelocity = self._body:getAngularVelocity() + 0.5 * (1 - 2 * love.math.random()),
                 })
                 self._game:newModel("brick", {
                     bodyType = "dynamic",
@@ -86,7 +87,7 @@ function BrickModel:update(dt)
                     position = {self._body:getWorldPoint(0.25 * width, 0)},
                     angle = self._body:getAngle(),
                     linearVelocity = {self._body:getLinearVelocityFromLocalPoint(0.25 * width, 0)},
-                    angularVelocity = self._body:getAngularVelocity(),
+                    angularVelocity = self._body:getAngularVelocity() + 0.5 * (1 - 2 * love.math.random()),
                 })
             else
                 self._game:newModel("brick", {
@@ -95,7 +96,7 @@ function BrickModel:update(dt)
                     position = {self._body:getWorldPoint(0, -0.25 * height)},
                     angle = self._body:getAngle(),
                     linearVelocity = {self._body:getLinearVelocityFromLocalPoint(0, -0.25 * height)},
-                    angularVelocity = self._body:getAngularVelocity(),
+                    angularVelocity = self._body:getAngularVelocity() + 0.5 * (1 - 2 * love.math.random()),
                 })
                 self._game:newModel("brick", {
                     bodyType = "dynamic",
@@ -103,9 +104,10 @@ function BrickModel:update(dt)
                     position = {self._body:getWorldPoint(0, 0.25 * height)},
                     angle = self._body:getAngle(),
                     linearVelocity = {self._body:getLinearVelocityFromLocalPoint(0, 0.25 * height)},
-                    angularVelocity = self._body:getAngularVelocity(),
+                    angularVelocity = self._body:getAngularVelocity() + 0.5 * (1 - 2 * love.math.random()),
                 })
             end
+            self:_addScore(1)
             self._game:removeModel(self)
             return
         end
@@ -113,12 +115,14 @@ function BrickModel:update(dt)
 
     if self._falling and self._body:getType() == "static" then
         self._body:setType("dynamic")
+        self._body:setAngularVelocity(0.5 * (1 - 2 * love.math.random()))
         local width, height = unpack(self._config.size or {1, 1})
         if width > 1.5 or height > 1.5 then
             self._fixture:setMask(2, 3, 4)
         else
             self._fixture:setMask(2, 3, 4, 5)
         end
+        self:_addScore(1)
     end
 end
 
@@ -129,6 +133,13 @@ function BrickModel:beginContact(fixture1, fixture2, contact, reversed)
     end
     if fixture:getCategory() == 5 then
         self._broken = true
+    end
+end
+
+function BrickModel:_addScore(score)
+    local scoreModel = self._game:getModelByType("score")
+    if scoreModel then
+        scoreModel:setScore(scoreModel:getScore() + score)
     end
 end
 

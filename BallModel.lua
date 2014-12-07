@@ -44,7 +44,7 @@ function BallModel:create()
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)
     self._fixture:setCategory(4)
-    self._fixture:setMask(5)
+    self._fixture:setMask(4, 5)
     self._fixture:setUserData({model = self})
 end
 
@@ -62,20 +62,15 @@ function BallModel:update(dt)
     local x, y = self._body:getPosition()
     local dx, dy = self._body:getLinearVelocity()
 
+    if dy < 0 and y < -10.5 then
+        self._game:removeModel(self)
+        return
+    end
+
     if self._spawning and y > -7.5 then
         self._fixture:setMask()
 
         self._spawning = false
-    end
-
-    if y < -10.5 and not self._spawning then
-        x, y = 15 * love.math.random() - 7.5, -10.5
-        dx, dy = 1 - 2 * love.math.random(), 1
-        self._body:setAngle(2 * math.pi * love.math.random())
-        self._body:setAngularVelocity(0)
-        self._fixture:setMask(5)
-
-        self._spawning = true
     end
 
     local directionX, directionY, length = math2D.normalize(dx, dy)

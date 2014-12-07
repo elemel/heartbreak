@@ -89,6 +89,14 @@ function PaddleModel:update(dt)
         x = x2
         dx = math.min(dx, 0)
     end
+    if y < y1 then
+        y = y1
+        dy = math.max(dy, 0)
+    end
+    if y > y2 then
+        y = y2
+        dy = math.min(dy, 0)
+    end
 
     self._body:setPosition(x, y)
     self._body:setLinearVelocity(dx, dy)

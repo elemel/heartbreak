@@ -3,6 +3,7 @@ local BrickModel = require "BrickModel"
 local Game = require "heart.Game"
 local math3D = require "heart.math3D"
 local PaddleModel = require "PaddleModel"
+local ScoreModel = require "ScoreModel"
 local WallModel = require "WallModel"
 
 function love.load()
@@ -23,7 +24,10 @@ function love.load()
     game:setModelCreator("ball", BallModel.new)
     game:setModelCreator("brick", BrickModel.new)
     game:setModelCreator("paddle", PaddleModel.new)
+    game:setModelCreator("score", ScoreModel.new)
     game:setModelCreator("wall", WallModel.new)
+
+    game:newModel("score")
 
     game:newModel("wall", {
         size = {20, 2},
@@ -44,39 +48,12 @@ function love.load()
         restitution = 0.5,
     })
 
-    local z = 1000 * love.math.random()
-    local frequency = 0.2
-    for y = 0, 7 do
-        for x = -8, 7, 2 do
-            if math3D.fbm(frequency * (x + 1), frequency * (y + 0.5), z) > 0.5 then
-                game:newModel("brick", {
-                    size = {2, 1},
-                    position = {x + 1, y + 0.5},
-                    friction = 0.5,
-                    restitution = 0.5,
-                })
-            end
-        end
-    end
-
     game:newModel("paddle", {
         radius = 1,
         position = {0, -9},
         linearAcceleration = 50,
         maxLinearVelocity = 20,
-        positionBounds = {-8, 0, 8, 0},
-        friction = 0.5,
-        restitution = 0.5,
-    })
-
-    game:newModel("ball", {
-        position = {15 * love.math.random() - 7.5, -10.5},
-        linearVelocity = {1 - 2 * love.math.random(), 1},
-        minLinearVelocity = 10,
-        maxLinearVelocity = 10,
-        minLinearVelocityX = 2,
-        minLinearVelocityY = 2,
-        radius = 0.5,
+        positionBounds = {-8, -9, 8, -9},
         friction = 0.5,
         restitution = 0.5,
     })

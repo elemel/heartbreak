@@ -27,12 +27,16 @@ end
 function BrickModel:create()
     local config = self._config
 
+    self._falling = false
     self._broken = false
 
     local world = self._game:getWorld()
     local x, y = unpack(config.position or {0, 0})
-    self._body = love.physics.newBody(world, x, y, "static")
+    local bodyType = config.bodyType or "static"
+    self._body = love.physics.newBody(world, x, y, bodyType)
+    self._body:setAngle(config.angle or 0)
     self._body:setLinearVelocity(unpack(config.linearVelocity or {0, 0}))
+    self._body:setAngularVelocity(config.angularVelocity or 0)
 
     local width, height = unpack(config.size or {1, 1})
     local shape = love.physics.newRectangleShape(width, height)
@@ -40,7 +44,15 @@ function BrickModel:create()
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)
     self._fixture:setCategory(3)
-    self._fixture:setMask(2, 3)
+    if bodyType == "dynamic" then
+        if width > 1.5 or height > 1.5 then
+            self._fixture:setMask(2, 3, 4)
+        else
+            self._fixture:setMask(2, 3, 4, 5)
+        end
+    else
+        self._fixture:setMask(2, 3)
+    end
     self._fixture:setUserData({model = self})
 end
 
@@ -50,19 +62,74 @@ function BrickModel:destroy()
 end
 
 function BrickModel:update(dt)
-    if self._broken and self._body:getType() == "static" then
-        self._body:setType("dynamic")
-        self._fixture:setMask(2, 3, 4)
-    end
-
     local x, y = self._body:getPosition()
     if y < -10 then
         self._game:removeModel(self)
+        return
+    end
+
+    if self._broken then
+        local width, height = unpack(self._config.size or {1, 1})
+        if width > 1.5 or height > 1.5 then
+            if width > height then
+                self._game:newModel("brick", {
+                    bodyType = "dynamic",
+                    size = {0.5 * width, height},
+                    position = {self._body:getWorldPoint(-0.25 * width, 0)},
+                    angle = self._body:getAngle(),
+                    linearVelocity = {self._body:getLinearVelocityFromLocalPoint(-0.25 * width, 0)},
+                    angularVelocity = self._body:getAngularVelocity(),
+                })
+                self._game:newModel("brick", {
+                    bodyType = "dynamic",
+                    size = {0.5 * width, height},
+                    position = {self._body:getWorldPoint(0.25 * width, 0)},
+                    angle = self._body:getAngle(),
+                    linearVelocity = {self._body:getLinearVelocityFromLocalPoint(0.25 * width, 0)},
+                    angularVelocity = self._body:getAngularVelocity(),
+                })
+            else
+                self._game:newModel("brick", {
+                    bodyType = "dynamic",
+                    size = {width, 0.5 * height},
+                    position = {self._body:getWorldPoint(0, -0.25 * height)},
+                    angle = self._body:getAngle(),
+                    linearVelocity = {self._body:getLinearVelocityFromLocalPoint(0, -0.25 * height)},
+                    angularVelocity = self._body:getAngularVelocity(),
+                })
+                self._game:newModel("brick", {
+                    bodyType = "dynamic",
+                    size = {width, 0.5 * height},
+                    position = {self._body:getWorldPoint(0, 0.25 * height)},
+                    angle = self._body:getAngle(),
+                    linearVelocity = {self._body:getLinearVelocityFromLocalPoint(0, 0.25 * height)},
+                    angularVelocity = self._body:getAngularVelocity(),
+                })
+            end
+            self._game:removeModel(self)
+            return
+        end
+    end
+
+    if self._falling and self._body:getType() == "static" then
+        self._body:setType("dynamic")
+        local width, height = unpack(self._config.size or {1, 1})
+        if width > 1.5 or height > 1.5 then
+            self._fixture:setMask(2, 3, 4)
+        else
+            self._fixture:setMask(2, 3, 4, 5)
+        end
     end
 end
 
 function BrickModel:beginContact(fixture1, fixture2, contact, reversed)
-    self._broken = true
+    local fixture = reversed and fixture1 or fixture2
+    if fixture:getCategory() == 4 then
+        self._falling = true
+    end
+    if fixture:getCategory() == 5 then
+        self._broken = true
+    end
 end
 
 return BrickModel

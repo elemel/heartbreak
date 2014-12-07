@@ -45,6 +45,8 @@ function PaddleModel:create()
     self._fixture = love.physics.newFixture(self._body, shape, density)
     self._fixture:setFriction(friction)
     self._fixture:setRestitution(restitution)
+    self._fixture:setCategory(5)
+    self._fixture:setUserData({model = self})
 end
 
 function PaddleModel:destroy()

@@ -7,6 +7,7 @@ local WallModel = require "WallModel"
 
 function love.load()
     love.window.setMode(800, 600, {
+        fullscreen = true,
         resizable = true,
     })
     love.window.setTitle("Heartbreak")

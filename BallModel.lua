@@ -43,6 +43,7 @@ function BallModel:create()
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)
     self._fixture:setCategory(4)
+    self._fixture:setUserData({model = self})
 end
 
 function BallModel:destroy()

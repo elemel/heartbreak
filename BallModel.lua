@@ -37,6 +37,7 @@ function BallModel:create()
     self._body = love.physics.newBody(world, x, y, "dynamic")
     self._body:setLinearVelocity(unpack(config.linearVelocity or {0, 0}))
     self._body:setGravityScale(0)
+    self._body:setFixedRotation(true)
 
     local radius = config.radius or 1
     local shape = love.physics.newCircleShape(0, 0, radius)
@@ -82,6 +83,10 @@ function BallModel:update(dt)
 
     self._body:setPosition(x, y)
     self._body:setLinearVelocity(dx, dy)
+end
+
+function BallModel:getBody()
+    return self._body
 end
 
 return BallModel

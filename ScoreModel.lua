@@ -29,7 +29,7 @@ end
 function ScoreModel:create()
     self._level = 1
     self._score = 0
-    self._nextExtraBallScore = 50
+    self._nextExtraBallScore = 20
 end
 
 function ScoreModel:destroy()
@@ -38,12 +38,14 @@ end
 function ScoreModel:update(dt)
     if self._score >= self._nextExtraBallScore then
         self:_createBall()
-        self._nextExtraBallScore = self._nextExtraBallScore + 50
+        self._nextExtraBallScore = self._nextExtraBallScore + 20
     end
 
     local brickCount = #self._game:getModelsByType("brick")
     if brickCount == 0 then
         local ballCount = #self._game:getModelsByType("ball")
+        self:_destroyBalls()
+        self._level = self._level + 1
         self:_createBricks()
         for i = 1, math.max(ballCount, 1) do
             self:_createBall()
@@ -56,7 +58,7 @@ function ScoreModel:update(dt)
         self:_destroyBricks()
         self._level = 1
         self._score = 0
-        self._nextExtraBallScore = 50
+        self._nextExtraBallScore = 20
         self:_createBricks()
         self:_createBall()
         return
@@ -69,21 +71,22 @@ end
 
 function ScoreModel:setScore(score)
     self._score = score
-    print(self._score)
+end
+
+function ScoreModel:getLevel()
+    return self._level
 end
 
 function ScoreModel:_createBall()
     local linearVelocity = 10 + 2 * (self._level - 1)
     self._game:newModel("ball", {
         position = {15 * love.math.random() - 7.5, -10.5},
-        linearVelocity = {1 - 5 * love.math.random(), 1},
+        linearVelocity = {1 - 2 * love.math.random(), 1},
         minLinearVelocity = linearVelocity,
         maxLinearVelocity = linearVelocity,
         minLinearVelocityX = 2,
         minLinearVelocityY = 2,
         radius = 0.5,
-        friction = 0.5,
-        restitution = 0.5,
     })
 end
 
@@ -102,7 +105,6 @@ function ScoreModel:_createBricks()
                 game:newModel("brick", {
                     size = {2, 1},
                     position = {x + 1, y + 0.5},
-                    friction = 0.5,
                     restitution = 0.5,
                 })
             end

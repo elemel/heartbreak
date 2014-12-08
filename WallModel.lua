@@ -47,4 +47,8 @@ end
 function WallModel:update(dt)
 end
 
+function WallModel:getBody()
+    return self._body
+end
+
 return WallModel

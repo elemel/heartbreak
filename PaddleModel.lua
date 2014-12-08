@@ -103,4 +103,8 @@ function PaddleModel:update(dt)
     self._linearVelocity = {dx, dy}
 end
 
+function PaddleModel:getBody()
+    return self._body
+end
+
 return PaddleModel

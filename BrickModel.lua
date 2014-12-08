@@ -63,7 +63,7 @@ end
 
 function BrickModel:update(dt)
     local x, y = self._body:getPosition()
-    if y < -10 then
+    if y < -11.5 then
         self:_addScore(1)
         self._game:removeModel(self)
         return
@@ -141,6 +141,10 @@ function BrickModel:_addScore(score)
     if scoreModel then
         scoreModel:setScore(scoreModel:getScore() + score)
     end
+end
+
+function BrickModel:getBody()
+    return self._body
 end
 
 return BrickModel

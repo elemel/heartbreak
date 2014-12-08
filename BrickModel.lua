@@ -66,6 +66,7 @@ function BrickModel:update(dt)
     if y < -11.5 then
         self:_addScore(1)
         self._game:removeModel(self)
+        self._game:playSound("score")
         return
     end
 
@@ -109,6 +110,7 @@ function BrickModel:update(dt)
             end
             self:_addScore(1)
             self._game:removeModel(self)
+            self._game:playSound("break")
             return
         end
     end
@@ -123,6 +125,7 @@ function BrickModel:update(dt)
             self._fixture:setMask(2, 3, 4, 5)
         end
         self:_addScore(1)
+        self._game:playSound("hit")
     end
 end
 

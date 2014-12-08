@@ -48,6 +48,10 @@ function love.load()
     game:getScene():addLayer(SpriteLayer.new("ball"))
     game:getScene():addLayer(TextSpriteLayer.new("score"))
 
+    game:setSound("break", love.audio.newSource("resources/sounds/break.ogg", "static"))
+    game:setSound("hit", love.audio.newSource("resources/sounds/hit.ogg", "static"))
+    game:setSound("score", love.audio.newSource("resources/sounds/score.ogg", "static"))
+
     game:newModel("score")
 
     game:newModel("wall", {

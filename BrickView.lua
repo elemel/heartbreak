@@ -1,4 +1,4 @@
-local colors = require "heart.colors"
+local math_ = require "heart.math"
 
 local PolygonSprite = require "heart.PolygonSprite"
 
@@ -25,7 +25,7 @@ function BrickView:create()
             0.5 * width, 0.5 * height,
             -0.5 * width, 0.5 * height,
         },
-        fillColor = {colors.toByteColor(heat + 0.5, heat, heat - 0.5, 1)},
+        fillColor = {math_.toByte4(heat + 0.5, heat, heat - 0.5, 1)},
     })
     self._layer = self._game:getScene():getLayerByName("brick")
     self._layer:addSprite(self._sprite)

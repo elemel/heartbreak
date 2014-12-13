@@ -1,5 +1,4 @@
-local math1D = require "heart.math1D"
-local math2D = require "heart.math2D"
+local math_ = require "heart.math"
 
 local BallModel = {}
 BallModel.__index = BallModel
@@ -74,12 +73,12 @@ function BallModel:update(dt)
         self._spawning = false
     end
 
-    local directionX, directionY, length = math2D.normalize(dx, dy)
-    length = math1D.clamp(length, minLinearVelocity, maxLinearVelocity)
+    local directionX, directionY, length = math_.normalize2(dx, dy)
+    length = math_.clamp(length, minLinearVelocity, maxLinearVelocity)
     dx, dy = directionX * length, directionY * length
 
-    dx = math1D.sign(dx) * math.max(math.abs(dx), minLinearVelocityX)
-    dy = math1D.sign(dy) * math.max(math.abs(dy), minLinearVelocityY)
+    dx = math_.sign(dx) * math.max(math.abs(dx), minLinearVelocityX)
+    dy = math_.sign(dy) * math.max(math.abs(dy), minLinearVelocityY)
 
     self._body:setPosition(x, y)
     self._body:setLinearVelocity(dx, dy)

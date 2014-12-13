@@ -1,4 +1,4 @@
-local math1D = require "heart.math1D"
+local math_ = require "heart.math"
 
 local PaddleModel = {}
 PaddleModel.__index = PaddleModel
@@ -73,9 +73,9 @@ function PaddleModel:update(dt)
 
     if inputX ~= 0 then
         dx = dx + inputX * linearAcceleration * dt
-        dx = math1D.sign(dx) * math.min(math.abs(dx), maxLinearVelocity)
+        dx = math_.sign(dx) * math.min(math.abs(dx), maxLinearVelocity)
     else
-        dx = math1D.sign(dx) * math.max(math.abs(dx) - linearAcceleration * dt, 0)
+        dx = math_.sign(dx) * math.max(math.abs(dx) - linearAcceleration * dt, 0)
     end
 
     x = x + dx * dt

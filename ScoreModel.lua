@@ -1,4 +1,4 @@
-local math3D = require "heart.math3D"
+local math_ = require "heart.math"
 
 local ScoreModel = {}
 ScoreModel.__index = ScoreModel
@@ -101,7 +101,7 @@ function ScoreModel:_createBricks()
     local frequency = 0.2
     for y = 0, 7 do
         for x = -8, 7, 2 do
-            if math3D.fbm(frequency * (x + 1), frequency * (y + 0.5), z) > 0.5 then
+            if math_.fbm3(frequency * (x + 1), frequency * (y + 0.5), z) > 0.5 then
                 game:newModel("brick", {
                     size = {2, 1},
                     position = {x + 1, y + 0.5},

@@ -18,6 +18,7 @@ function love.load()
         resizable = true,
     })
     love.window.setTitle("Heartbreak")
+    love.mouse.setVisible(false)
 
     love.physics.setMeter(1)
     love.graphics.setBackgroundColor(63, 0, 0, 255)
@@ -69,8 +70,6 @@ function love.load()
     game:newModel("paddle", {
         radius = 1,
         position = {0, -9},
-        linearAcceleration = 50,
-        maxLinearVelocity = 20,
         positionBounds = {-8, -9, 8, -9},
         restitution = 0.5,
     })

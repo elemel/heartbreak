@@ -56,51 +56,13 @@ end
 
 function PaddleModel:update(dt)
     local config = self._config
-    local linearAcceleration = config.linearAcceleration or 1
-    local maxLinearVelocity = config.maxLinearVelocity or 1
     local x1, y1, x2, y2 = unpack(config.positionBounds or {-1, -1, 1, 1})
 
-    local upInput = love.keyboard.isDown("up")
-    local leftInput = love.keyboard.isDown("left")
-    local downInput = love.keyboard.isDown("down")
-    local rightInput = love.keyboard.isDown("right")
-
-    local inputX = (rightInput and 1 or 0) - (leftInput and 1 or 0)
-    local inputY = (upInput and 1 or 0) - (downInput and 1 or 0)
-
-    local x, y = self._body:getPosition()
-    local dx, dy = unpack(self._linearVelocity)
-
-    if inputX ~= 0 then
-        dx = dx + inputX * linearAcceleration * dt
-        dx = math_.sign(dx) * math.min(math.abs(dx), maxLinearVelocity)
-    else
-        dx = math_.sign(dx) * math.max(math.abs(dx) - linearAcceleration * dt, 0)
-    end
-
-    x = x + dx * dt
-    y = y + dy * dt
-
-    if x < x1 then
-        x = x1
-        dx = math.max(dx, 0)
-    end
-    if x > x2 then
-        x = x2
-        dx = math.min(dx, 0)
-    end
-    if y < y1 then
-        y = y1
-        dy = math.max(dy, 0)
-    end
-    if y > y2 then
-        y = y2
-        dy = math.min(dy, 0)
-    end
-
+    local mouseX, mouseY = love.mouse.getPosition()
+    local x, y = self._game:getCamera():toWorld(mouseX, mouseY)
+    x = math_.clamp(x, x1, x2)
+    y = math_.clamp(y, y1, y2)
     self._body:setPosition(x, y)
-    self._body:setLinearVelocity(dx, dy)
-    self._linearVelocity = {dx, dy}
 end
 
 function PaddleModel:getBody()

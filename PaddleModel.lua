@@ -32,6 +32,7 @@ function PaddleModel:create()
     local density = self._config.density or 1
     local x, y = unpack(config.position or {0, 0})
     local radius = config.radius or 1
+    local width, height = unpack(config.size or {1, 1})
     local friction = config.friction or 0
     local restitution = config.restitution or 1
 
@@ -39,7 +40,7 @@ function PaddleModel:create()
 
     self._body = love.physics.newBody(world, x, y, "static")
 
-    local shape = love.physics.newCircleShape(radius)
+    local shape = love.physics.newRectangleShape(width, height)
     self._fixture = love.physics.newFixture(self._body, shape, density)
     self._fixture:setFriction(friction)
     self._fixture:setRestitution(restitution)

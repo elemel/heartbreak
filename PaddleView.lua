@@ -12,9 +12,14 @@ function PaddleView.new(game, model)
 end
 
 function PaddleView:create()
-    local radius = self._model:getConfig().radius or 1
-    self._sprite = heart.graphics.newCircleSprite({
-        radius = radius,
+    local width, height = unpack(self._model:getConfig().size or {1, 1})
+    self._sprite = heart.graphics.newPolygonSprite({
+        vertices = {
+            -0.5 * width, -0.5 * height,
+            0.5 * width, -0.5 * height,
+            0.5 * width, 0.5 * height,
+            -0.5 * width, 0.5 * height,
+        },
         fillColor = {255, 127, 0, 255},
     })
     self._layer = self._game:getScene():getLayerByName("paddle")

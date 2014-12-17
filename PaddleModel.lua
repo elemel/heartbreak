@@ -54,14 +54,18 @@ function PaddleModel:destroy()
 end
 
 function PaddleModel:update(dt)
-    local config = self._config
-    local x1, y1, x2, y2 = unpack(config.positionBounds or {-1, -1, 1, 1})
+    if love.mouse.isGrabbed() then
+        local config = self._config
+        local x1, y1, x2, y2 = unpack(config.positionBounds or {-1, -1, 1, 1})
 
-    local mouseX, mouseY = love.mouse.getPosition()
-    local x, y = self._game:getCamera():toWorld(mouseX, mouseY)
-    x = heart.math.clamp(x, x1, x2)
-    y = heart.math.clamp(y, y1, y2)
-    self._body:setPosition(x, y)
+        local mouseX, mouseY = heart.mouse.readPosition()
+        local transformation = self._game:getCamera():getInverseTransformation()
+        local x, y = self._body:getPosition()
+        local dx, dy = transformation:transformVector(mouseX, mouseY)
+        x = heart.math.clamp(x + dx, x1, x2)
+        y = heart.math.clamp(y + dy, y1, y2)
+        self._body:setPosition(x, y)
+    end
 end
 
 function PaddleModel:getBody()

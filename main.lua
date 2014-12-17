@@ -78,7 +78,9 @@ function love.load()
 end
 
 function love.update(dt)
-    game:update(dt)
+    if love.mouse.isGrabbed() then
+        game:update(dt)
+    end
 end
 
 function love.draw()
@@ -86,8 +88,18 @@ function love.draw()
 end
 
 function love.keypressed(key, isrepeat)
+    if key == "escape" and not isrepeat then
+        love.mouse.setVisible(true)
+        love.mouse.setGrabbed(false)
+    end
     if key == "return" and not isrepeat then
         local screenshot = love.graphics.newScreenshot()
         screenshot:encode("heartbreak-screenshot.png")
     end
+end
+
+function love.mousepressed(x, y, button)
+    love.mouse.setVisible(false)
+    love.mouse.setGrabbed(true)
+    heart.mouse.readPosition()
 end

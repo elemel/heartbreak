@@ -72,7 +72,7 @@ function love.load()
     game:newModel("paddle", {
         size = {4, 1},
         position = {0, -8.5},
-        positionBounds = {-8, -8.5, 8, -8.5},
+        positionBounds = {-6, -8.5, 6, -8.5},
         restitution = 0.5,
     })
 end

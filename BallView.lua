@@ -15,7 +15,7 @@ function BallView:create()
     local radius = self._model:getConfig().radius or 1
     self._sprite = heart.graphics.newCircleSprite({
         radius = radius,
-        fillColor = {255, 255, 255, 255},
+        color = {255, 255, 255, 255},
     })
     self._layer = self._game:getScene():getLayerByName("ball")
     self._layer:addSprite(self._sprite)

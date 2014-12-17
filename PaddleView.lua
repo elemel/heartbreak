@@ -20,7 +20,7 @@ function PaddleView:create()
             0.5 * width, 0.5 * height,
             -0.5 * width, 0.5 * height,
         },
-        fillColor = {255, 127, 0, 255},
+        color = {255, 127, 0, 255},
     })
     self._layer = self._game:getScene():getLayerByName("paddle")
     self._layer:addSprite(self._sprite)

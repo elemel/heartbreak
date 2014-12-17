@@ -1,5 +1,3 @@
-local PolygonSprite = require "heart.PolygonSprite"
-
 local WallView = {}
 WallView.__index = WallView
 
@@ -15,7 +13,7 @@ end
 
 function WallView:create()
     local width, height = unpack(self._model:getConfig().size or {1, 1})
-    self._sprite = PolygonSprite.new({
+    self._sprite = heart.graphics.newPolygonSprite({
         vertices = {
             -0.5 * width, -0.5 * height,
             0.5 * width, -0.5 * height,

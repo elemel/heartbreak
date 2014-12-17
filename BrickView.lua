@@ -1,7 +1,3 @@
-local math_ = require "heart.math"
-
-local PolygonSprite = require "heart.PolygonSprite"
-
 local BrickView = {}
 BrickView.__index = BrickView
 
@@ -18,14 +14,14 @@ end
 function BrickView:create()
     local width, height = unpack(self._model:getConfig().size or {1, 1})
     local heat = love.math.random()
-    self._sprite = PolygonSprite.new({
+    self._sprite = heart.graphics.newPolygonSprite({
         vertices = {
             -0.5 * width, -0.5 * height,
             0.5 * width, -0.5 * height,
             0.5 * width, 0.5 * height,
             -0.5 * width, 0.5 * height,
         },
-        fillColor = {math_.toByte4(heat + 0.5, heat, heat - 0.5, 1)},
+        fillColor = {heart.math.toByte4(heat + 0.5, heat, heat - 0.5, 1)},
     })
     self._layer = self._game:getScene():getLayerByName("brick")
     self._layer:addSprite(self._sprite)

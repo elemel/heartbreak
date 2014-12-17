@@ -1,13 +1,13 @@
+heart = require "heart"
+
 local BallModel = require "BallModel"
 local BallView = require "BallView"
 local BrickModel = require "BrickModel"
 local BrickView = require "BrickView"
-local Game = require "heart.Game"
 local PaddleModel = require "PaddleModel"
 local PaddleView = require "PaddleView"
 local ScoreModel = require "ScoreModel"
 local ScoreView = require "ScoreView"
-local SpriteLayer = require "heart.SpriteLayer"
 local TextSpriteLayer = require "TextSpriteLayer"
 local WallModel = require "WallModel"
 local WallView = require "WallView"
@@ -15,16 +15,18 @@ local WallView = require "WallView"
 function love.load()
     love.window.setMode(800, 600, {
         fullscreen = false,
+        fullscreentype = "desktop",
         resizable = true,
     })
     love.window.setTitle("Heartbreak")
     love.mouse.setVisible(false)
+    love.mouse.setGrabbed(true)
 
     love.physics.setMeter(1)
     love.graphics.setBackgroundColor(63, 0, 0, 255)
     love.graphics.setNewFont(100)
 
-    game = Game.new({
+    game = heart.game.newGame({
         cameraScale = 0.1,
         gravity = {0, -5},
     })
@@ -42,10 +44,10 @@ function love.load()
     game:setViewCreator("score", ScoreView.new)
     game:setViewCreator("wall", WallView.new)
 
-    game:getScene():addLayer(SpriteLayer.new("wall"))
-    game:getScene():addLayer(SpriteLayer.new("paddle"))
-    game:getScene():addLayer(SpriteLayer.new("brick"))
-    game:getScene():addLayer(SpriteLayer.new("ball"))
+    game:getScene():addLayer(heart.graphics.newSpriteLayer("wall"))
+    game:getScene():addLayer(heart.graphics.newSpriteLayer("paddle"))
+    game:getScene():addLayer(heart.graphics.newSpriteLayer("brick"))
+    game:getScene():addLayer(heart.graphics.newSpriteLayer("ball"))
     game:getScene():addLayer(TextSpriteLayer.new("score"))
 
     game:setSound("break", love.audio.newSource("resources/sounds/break.ogg", "static"))
@@ -68,9 +70,9 @@ function love.load()
     })
 
     game:newModel("paddle", {
-        radius = 1,
-        position = {0, -9},
-        positionBounds = {-8, -9, 8, -9},
+        size = {4, 1},
+        position = {0, -8.5},
+        positionBounds = {-8, -8.5, 8, -8.5},
         restitution = 0.5,
     })
 end

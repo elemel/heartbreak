@@ -130,11 +130,10 @@ function BrickModel:update(dt)
 end
 
 function BrickModel:beginContact(fixture1, fixture2, contact, reversed)
-    local fixture = reversed and fixture1 or fixture2
-    if fixture:getCategory() == 4 then
+    if fixture2:getCategory() == 4 then
         self._falling = true
     end
-    if fixture:getCategory() == 5 then
+    if fixture2:getCategory() == 5 then
         self._broken = true
     end
 end

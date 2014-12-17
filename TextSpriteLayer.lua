@@ -1,5 +1,3 @@
-local LinkedSet = require "heart.LinkedSet"
-
 local TextSpriteLayer = {}
 TextSpriteLayer.__index = TextSpriteLayer
 
@@ -8,7 +6,7 @@ function TextSpriteLayer.new(name)
     setmetatable(layer, TextSpriteLayer)
 
     layer._name = name
-    layer._sprites = LinkedSet.new()
+    layer._sprites = heart.collection.newLinkedSet()
 
     return layer
 end

@@ -1,5 +1,3 @@
-local CircleSprite = require "heart.CircleSprite"
-
 local BallView = {}
 BallView.__index = BallView
 
@@ -15,7 +13,7 @@ end
 
 function BallView:create()
     local radius = self._model:getConfig().radius or 1
-    self._sprite = CircleSprite.new({
+    self._sprite = heart.graphics.newCircleSprite({
         radius = radius,
         fillColor = {255, 255, 255, 255},
     })

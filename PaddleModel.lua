@@ -1,5 +1,3 @@
-local math_ = require "heart.math"
-
 local PaddleModel = {}
 PaddleModel.__index = PaddleModel
 
@@ -60,8 +58,8 @@ function PaddleModel:update(dt)
 
     local mouseX, mouseY = love.mouse.getPosition()
     local x, y = self._game:getCamera():toWorld(mouseX, mouseY)
-    x = math_.clamp(x, x1, x2)
-    y = math_.clamp(y, y1, y2)
+    x = heart.math.clamp(x, x1, x2)
+    y = heart.math.clamp(y, y1, y2)
     self._body:setPosition(x, y)
 end
 

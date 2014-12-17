@@ -76,7 +76,7 @@ function ScoreModel:getLevel()
 end
 
 function ScoreModel:_createBall()
-    local linearVelocity = 10 + 2 * (self._level - 1)
+    local linearVelocity = 10 + self._level
     self._game:newModel("ball", {
         position = {15 * love.math.random() - 7.5, -10.5},
         linearVelocity = {1 - 2 * love.math.random(), 1},

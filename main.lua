@@ -1,5 +1,6 @@
 heart = require "heart"
 
+local BallAndPaddleContactHandler = require "BallAndPaddleContactHandler"
 local BallModel = require "BallModel"
 local BallView = require "BallView"
 local BrickModel = require "BrickModel"
@@ -37,6 +38,8 @@ function love.load()
     game:setModelCreator("paddle", PaddleModel.new)
     game:setModelCreator("score", ScoreModel.new)
     game:setModelCreator("wall", WallModel.new)
+
+    game:setContactHandler("ball", "paddle", BallAndPaddleContactHandler.new())
 
     game:setViewCreator("ball", BallView.new)
     game:setViewCreator("brick", BrickView.new)

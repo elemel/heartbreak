@@ -36,15 +36,8 @@ end
 function PaddleModel:create()
     local config = self._config
     local world = self._game:getWorld()
-    local force = self._config.force or 1
-    local torque = self._config.torque or 1
-    local density = self._config.density or 1
-    local x, y = unpack(config.position or {0, 0})
-    local radius = config.radius or 1
     local width, height = unpack(config.size or {1, 1})
     local x1, y1, x2, y2 = unpack(config.line or {-1, 0, 1, 0})
-
-    self._linearVelocity = {0, 0}
 
     self._body = love.physics.newBody(world, 0.5 * (x1 + x2), 0.5 * (y1 + y2), "static")
 

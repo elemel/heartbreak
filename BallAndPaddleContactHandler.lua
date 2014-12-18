@@ -14,11 +14,9 @@ function BallAndPaddleContactHandler:beginContact(
     if dy < 0 then
         local ballX, ballY = ballBody:getPosition()
 
-        local paddleBody = paddleFixture:getBody()
         local paddleModel = paddleFixture:getUserData().model
-        local paddleX, paddleY = paddleBody:getPosition()
-        local paddleWidth, paddleHeight =
-            unpack(paddleModel:getConfig().size or {1, 1})
+        local paddleX, paddleY = paddleModel:getPosition()
+        local paddleWidth, paddleHeight = paddleModel:getSize()
         if paddleX - 0.5 * paddleWidth < ballX and
                 ballX < paddleX + 0.5 * paddleWidth then
             dy = -dy

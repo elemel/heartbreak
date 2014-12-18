@@ -75,7 +75,7 @@ function love.load()
     game:newModel("paddle", {
         size = {4, 1},
         position = {0, -8.5},
-        positionBounds = {-6, -8.5, 6, -8.5},
+        line = {-8, -8.5, 8, -8.5},
         restitution = 0.5,
     })
 end
@@ -91,6 +91,9 @@ function love.draw()
 end
 
 function love.keypressed(key, isrepeat)
+    if key == "1" and not isrepeat then
+        game:setWorldViewEnabled(not game:isWorldViewEnabled())
+    end
     if key == "escape" and not isrepeat then
         love.mouse.setVisible(true)
         love.mouse.setGrabbed(false)

@@ -31,9 +31,7 @@ function PaddleView:destroy()
 end
 
 function PaddleView:draw()
-    local body = self._model:getBody()
-    self._sprite:setPosition(body:getPosition())
-    self._sprite:setAngle(body:getAngle())
+    self._sprite:setPosition(self._model:getPosition())
 end
 
 return PaddleView

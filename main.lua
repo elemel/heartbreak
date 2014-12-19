@@ -5,6 +5,7 @@ local BallModel = require "BallModel"
 local BallView = require "BallView"
 local BrickModel = require "BrickModel"
 local BrickView = require "BrickView"
+local PaddleController = require "PaddleController"
 local PaddleModel = require "PaddleModel"
 local PaddleView = require "PaddleView"
 local ScoreModel = require "ScoreModel"
@@ -46,6 +47,8 @@ function love.load()
     game:setViewFactory("paddle", PaddleView.new)
     game:setViewFactory("score", ScoreView.new)
     game:setViewFactory("wall", WallView.new)
+
+    game:setControllerFactory("paddle", PaddleController.new)
 
     game:getScene():addLayer(heart.graphics.newSpriteLayer("wall"))
     game:getScene():addLayer(heart.graphics.newSpriteLayer("paddle"))

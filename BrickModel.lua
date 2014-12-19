@@ -8,6 +8,7 @@ function BrickModel.new(game, id, config)
     model._game = game
     model._id = id
     model._config = config or {}
+    model._size = config.size or {1, 1}
 
     return model
 end
@@ -22,6 +23,10 @@ end
 
 function BrickModel:getConfig()
     return self._config
+end
+
+function BrickModel:getSize()
+    return unpack(self._size)
 end
 
 function BrickModel:create()

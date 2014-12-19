@@ -56,6 +56,10 @@ function love.load()
     game:getScene():addLayer(heart.graphics.newSpriteLayer("ball"))
     game:getScene():addLayer(TextSpriteLayer.new("score"))
 
+    local wallShaderSource = love.filesystem.read("resources/shaders/wall.glsl")
+    local wallShader = love.graphics.newShader(wallShaderSource)
+    game:setShader("wall", wallShader)
+
     game:setSound("break", love.audio.newSource("resources/sounds/break.ogg", "static"))
     game:setSound("hit", love.audio.newSource("resources/sounds/hit.ogg", "static"))
     game:setSound("score", love.audio.newSource("resources/sounds/score.ogg", "static"))

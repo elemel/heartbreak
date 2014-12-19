@@ -12,16 +12,22 @@ function PaddleView.new(game, model)
 end
 
 function PaddleView:create()
-    local width, height = unpack(self._model:getConfig().size or {1, 1})
-    self._sprite = heart.graphics.newPolygonSprite({
-        vertices = {
-            -0.5 * width, -0.5 * height,
-            0.5 * width, -0.5 * height,
-            0.5 * width, 0.5 * height,
-            -0.5 * width, 0.5 * height,
-        },
+    local width, height = self._model:getSize()
+    self._sprite = heart.graphics.newSprite({
         color = {255, 127, 0, 255},
+        origin = {1 + 0.5 * width, 1 + 0.5 * height},
     })
+
+    local imageData = love.image.newImageData(width + 2, height + 2)
+    for y = 1, height do
+        for x = 1, width do
+            imageData:setPixel(x, y, 255, 255, 255, 255)
+        end
+    end
+    local image = love.graphics.newImage(imageData)
+
+    self._sprite:setImage(image)
+    self._sprite:setShader(self._game:getShader("wall"))
     self._layer = self._game:getScene():getLayerByName("paddle")
     self._layer:addSprite(self._sprite)
 end

@@ -51,9 +51,9 @@ function BrickModel:create()
     self._fixture:setCategory(3)
     if bodyType == "dynamic" then
         if width > 1.5 or height > 1.5 then
-            self._fixture:setMask(2, 3, 4)
-        else
             self._fixture:setMask(2, 3, 4, 5)
+        else
+            self._fixture:setMask(2, 3, 4, 5, 6)
         end
     else
         self._fixture:setMask(2, 3)
@@ -125,9 +125,9 @@ function BrickModel:update(dt)
         self._body:setAngularVelocity(0.5 * (1 - 2 * love.math.random()))
         local width, height = unpack(self._config.size or {1, 1})
         if width > 1.5 or height > 1.5 then
-            self._fixture:setMask(2, 3, 4)
-        else
             self._fixture:setMask(2, 3, 4, 5)
+        else
+            self._fixture:setMask(2, 3, 4, 5, 6)
         end
         self:_addScore(1)
         self._game:playSound("hit")
@@ -138,7 +138,7 @@ function BrickModel:beginContact(fixture1, fixture2, contact, reversed)
     if fixture2:getCategory() == 4 then
         self._falling = true
     end
-    if fixture2:getCategory() == 5 then
+    if fixture2:getCategory() == 6 then
         self._broken = true
     end
 end

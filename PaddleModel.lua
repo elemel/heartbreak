@@ -33,6 +33,7 @@ end
 
 function PaddleModel:setPosition(x, y)
     self._position = {x, y}
+    self._brickBody:setPosition(x, y)
 end
 
 function PaddleModel:getSize()
@@ -52,10 +53,17 @@ function PaddleModel:create()
     self._body = love.physics.newBody(world, 0.5 * (x1 + x2), 0.5 * (y1 + y2), "static")
 
     local shape = love.physics.newRectangleShape(x2 - x1, height)
-    self._fixture = love.physics.newFixture(self._body, shape, density)
+    self._fixture = love.physics.newFixture(self._body, shape)
     self._fixture:setSensor(true)
     self._fixture:setCategory(5)
     self._fixture:setUserData({model = self})
+
+    self._brickBody = love.physics.newBody(world, 0.5 * (x1 + x2), 0.5 * (y1 + y2), "static")
+
+    local brickShape = love.physics.newRectangleShape(width, height)
+    self._brickFixture = love.physics.newFixture(self._brickBody, brickShape)
+    self._brickFixture:setCategory(6)
+    self._brickFixture:setUserData({model = self})
 end
 
 function PaddleModel:destroy()

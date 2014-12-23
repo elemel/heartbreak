@@ -42,7 +42,7 @@ function BallModel:create()
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)
     self._fixture:setCategory(4)
-    self._fixture:setMask(4, 5)
+    self._fixture:setMask(4, 5, 6)
     self._fixture:setUserData({model = self})
 end
 
@@ -66,7 +66,7 @@ function BallModel:update(dt)
     end
 
     if self._spawning and y > -7.5 then
-        self._fixture:setMask(4)
+        self._fixture:setMask(4, 6)
 
         self._spawning = false
     end

@@ -27,8 +27,6 @@ end
 function BallModel:create()
     local config = self._config
 
-    self._spawning = true
-
     local world = self._game:getWorld()
     local x, y = unpack(config.position or {0, 0})
     self._body = love.physics.newBody(world, x, y, "dynamic")
@@ -42,7 +40,7 @@ function BallModel:create()
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)
     self._fixture:setCategory(4)
-    self._fixture:setMask(4, 5, 6)
+    self._fixture:setMask(4, 6)
     self._fixture:setUserData({model = self})
 end
 
@@ -63,12 +61,6 @@ function BallModel:update(dt)
     if dy < 0 and y < -10.5 then
         self._game:removeModel(self)
         return
-    end
-
-    if self._spawning and y > -7.5 then
-        self._fixture:setMask(4, 6)
-
-        self._spawning = false
     end
 
     local directionX, directionY, length = heart.math.normalize2(dx, dy)

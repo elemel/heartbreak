@@ -30,9 +30,12 @@ function BallModel:create()
     local world = self._game:getWorld()
     local x, y = unpack(config.position or {0, 0})
     self._body = love.physics.newBody(world, x, y, "dynamic")
+    self._body:setAngle(config.angle or 0)
     self._body:setLinearVelocity(unpack(config.linearVelocity or {0, 0}))
+    self._body:setAngularVelocity(config.angularVelocity or 0)
+    self._body:setLinearDamping(config.linearDamping or 0)
+    self._body:setAngularDamping(config.angularDamping or 0)
     self._body:setGravityScale(0)
-    self._body:setFixedRotation(true)
 
     local radius = config.radius or 1
     local shape = love.physics.newCircleShape(0, 0, radius)

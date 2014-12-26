@@ -20,7 +20,7 @@ function WallView:create()
             0.5 * width, 0.5 * height,
             -0.5 * width, 0.5 * height,
         },
-        color = {127, 0, 0, 255},
+        color = {191, 31, 0, 255},
     })
     self._layer = self._game:getScene():getLayerByName("wall")
     self._layer:addSprite(self._sprite)

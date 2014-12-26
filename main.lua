@@ -25,7 +25,7 @@ function love.load()
     love.mouse.setGrabbed(true)
 
     love.physics.setMeter(1)
-    love.graphics.setBackgroundColor(63, 0, 0, 255)
+    love.graphics.setBackgroundColor(127, 0, 0, 255)
     love.graphics.setNewFont(100)
 
     game = heart.game.newGame({
@@ -69,14 +69,17 @@ function love.load()
     game:newModel("wall", {
         size = {20, 2},
         position = {0, 9},
+        friction = 1,
     })
     game:newModel("wall", {
         size = {2, 20},
         position = {-9, 0},
+        friction = 1,
     })
     game:newModel("wall", {
         size = {2, 20},
         position = {9, 0},
+        friction = 1,
     })
 
     game:newModel("paddle", {

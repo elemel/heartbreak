@@ -14,7 +14,7 @@ end
 function BrickView:create()
     local x0, y0 = unpack(self._model:getConfig().position or {0, 0})
     local width, height = self._model:getSize()
-    local heat = heart.math.fbm2(0.1 * x0, 0.1 * y0)
+    local heat = 0.25 + 0.5 * heart.math.fbm2(0.1 * x0, 0.1 * y0)
     self._sprite = heart.graphics.newSprite({
         color = {heart.math.toByte4(heat + 0.5, heat, heat - 0.5, 1)},
         origin = {1 + 0.5 * width, 1 + 0.5 * height},

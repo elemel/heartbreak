@@ -79,12 +79,15 @@ function ScoreModel:_createBall()
     local linearVelocity = 10 + self._level
     self._game:newModel("ball", {
         position = {15 * love.math.random() - 7.5, -10.5},
+        angle = 2 * math.pi * love.math.random(),
         linearVelocity = {1 - 2 * love.math.random(), 1},
+        angularDamping = 1,
         minLinearVelocity = linearVelocity,
         maxLinearVelocity = linearVelocity,
         minLinearVelocityX = 2,
         minLinearVelocityY = 2,
         radius = 0.5,
+        friction = 1,
     })
 end
 
@@ -97,16 +100,24 @@ end
 function ScoreModel:_createBricks()
     local z = 1000 * love.math.random()
     local frequency = 0.2
+    local positions = {}
     for y = 0, 7 do
         for x = -8, 7, 2 do
             if heart.math.fbm3(frequency * (x + 1), frequency * (y + 0.5), z) > 0.5 then
-                game:newModel("brick", {
-                    size = {2, 1},
-                    position = {x + 1, y + 0.5},
-                    restitution = 0.5,
-                })
+                table.insert(positions, {x, y})
             end
         end
+    end
+    heart.math.shuffle(positions)
+    for i, position in ipairs(positions) do
+        local x, y = unpack(position)
+        game:newModel("brick", {
+            size = {2, 1},
+            position = {x + 1, y + 0.5},
+            angle = 0.05 * math.pi * (2 * love.math.random() - 1),
+            friction = 1,
+            restitution = 0.5,
+        })
     end
 end
 

@@ -14,7 +14,7 @@ end
 function PaddleView:create()
     local width, height = self._model:getSize()
     self._sprite = heart.graphics.newSprite({
-        color = {255, 127, 0, 255},
+        color = {255, 255, 255, 255},
         origin = {1 + 0.5 * width, 1 + 0.5 * height},
     })
 

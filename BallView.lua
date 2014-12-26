@@ -12,11 +12,17 @@ function BallView.new(game, model)
 end
 
 function BallView:create()
-    local radius = self._model:getConfig().radius or 1
-    self._sprite = heart.graphics.newCircleSprite({
-        radius = radius,
+    self._sprite = heart.graphics.newSprite({
         color = {255, 255, 255, 255},
+        origin = {1.5, 1.5},
     })
+
+    local imageData = love.image.newImageData(3, 3)
+    imageData:setPixel(1, 1, 255, 255, 255, 255)
+    local image = love.graphics.newImage(imageData)
+
+    self._sprite:setImage(image)
+    self._sprite:setShader(self._game:getShader("wall"))
     self._layer = self._game:getScene():getLayerByName("ball")
     self._layer:addSprite(self._sprite)
 end

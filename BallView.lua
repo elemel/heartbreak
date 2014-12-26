@@ -12,13 +12,19 @@ function BallView.new(game, model)
 end
 
 function BallView:create()
+    local radius = self._model:getRadius()
+
     self._sprite = heart.graphics.newSprite({
         color = {255, 255, 255, 255},
-        origin = {1.5, 1.5},
+        origin = {radius + 1, radius + 1},
     })
 
-    local imageData = love.image.newImageData(3, 3)
-    imageData:setPixel(1, 1, 255, 255, 255, 255)
+    local imageData = love.image.newImageData(2 * radius + 2, 2 * radius + 2)
+    for y = 1, 2 * radius do
+        for x = 1, 2 * radius do
+            imageData:setPixel(x, y, 255, 255, 255, 255)
+        end
+    end
     local image = love.graphics.newImage(imageData)
 
     self._sprite:setImage(image)

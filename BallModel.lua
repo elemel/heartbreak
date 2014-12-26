@@ -8,6 +8,7 @@ function BallModel.new(game, id, config)
     model._game = game
     model._id = id
     model._config = config or {}
+    model._radius = config.radius or 1
 
     return model
 end
@@ -24,6 +25,10 @@ function BallModel:getConfig()
     return self._config
 end
 
+function BallModel:getRadius()
+    return self._radius
+end
+
 function BallModel:create()
     local config = self._config
 
@@ -37,8 +42,7 @@ function BallModel:create()
     self._body:setAngularDamping(config.angularDamping or 0)
     self._body:setGravityScale(0)
 
-    local radius = config.radius or 1
-    local shape = love.physics.newCircleShape(0, 0, radius)
+    local shape = love.physics.newCircleShape(0, 0, self._radius)
     self._fixture = love.physics.newFixture(self._body, shape)
     self._fixture:setFriction(config.friction or 0)
     self._fixture:setRestitution(config.restitution or 1)

@@ -25,7 +25,7 @@ function love.load()
     love.mouse.setGrabbed(true)
 
     love.physics.setMeter(1)
-    love.graphics.setBackgroundColor(127, 0, 0, 255)
+    love.graphics.setBackgroundColor(heart.math.toByte4(0.2, 0.15, 0.1, 1))
     love.graphics.setNewFont(100)
 
     game = heart.game.newGame({
@@ -66,20 +66,20 @@ function love.load()
 
     game:newModel("score")
 
+    local blocks = {}
+    for y = -9, 8 do
+        blocks[{-9, y}] = "metal"
+        blocks[{-8, y}] = "metal"
+        blocks[{9, y}] = "metal"
+        blocks[{10, y}] = "metal"
+    end
+    for x = -9, 10 do
+        blocks[{x, 9}] = "metal"
+        blocks[{x, 10}] = "metal"
+    end
     game:newModel("wall", {
-        size = {20, 2},
-        position = {0, 9},
         friction = 1,
-    })
-    game:newModel("wall", {
-        size = {2, 20},
-        position = {-9, 0},
-        friction = 1,
-    })
-    game:newModel("wall", {
-        size = {2, 20},
-        position = {9, 0},
-        friction = 1,
+        blocks = blocks,
     })
 
     game:newModel("paddle", {

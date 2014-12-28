@@ -64,6 +64,8 @@ function PaddleModel:create()
     self._brickFixture = love.physics.newFixture(self._brickBody, brickShape)
     self._brickFixture:setCategory(6)
     self._brickFixture:setUserData({model = self})
+    self._brickFixture:setFriction(config.friction or 0)
+    self._brickFixture:setRestitution(config.restitution or 1)
 end
 
 function PaddleModel:destroy()

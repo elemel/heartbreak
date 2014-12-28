@@ -25,9 +25,9 @@ function ScoreModel:getConfig()
 end
 
 function ScoreModel:create()
-    self._level = 1
+    self._level = 0
     self._score = 0
-    self._nextExtraBallScore = 20
+    self._nextExtraBallScore = 50
 end
 
 function ScoreModel:destroy()
@@ -36,11 +36,11 @@ end
 function ScoreModel:update(dt)
     if self._score >= self._nextExtraBallScore then
         self:_createBall()
-        self._nextExtraBallScore = self._nextExtraBallScore + 20
+        self._nextExtraBallScore = self._nextExtraBallScore + 50
     end
 
-    local brickCount = #self._game:getModelsByType("brick")
-    if brickCount == 0 then
+    local wallCount = #self._game:getModelsByType("wall")
+    if wallCount == 1 then
         local ballCount = #self._game:getModelsByType("ball")
         self:_destroyBalls()
         self._level = self._level + 1
@@ -56,7 +56,7 @@ function ScoreModel:update(dt)
         self:_destroyBricks()
         self._level = 1
         self._score = 0
-        self._nextExtraBallScore = 20
+        self._nextExtraBallScore = 50
         self:_createBricks()
         self:_createBall()
         return
@@ -103,7 +103,7 @@ function ScoreModel:_createBricks()
     local positions = {}
     for y = 0, 7 do
         for x = -8, 7, 2 do
-            if heart.math.fbm3(frequency * (x + 1), frequency * (y + 0.5), z) > 0.5 then
+            if heart.math.fbm3(frequency * x, frequency * y, z) > 0.5 then
                 table.insert(positions, {x, y})
             end
         end
@@ -111,19 +111,27 @@ function ScoreModel:_createBricks()
     heart.math.shuffle(positions)
     for i, position in ipairs(positions) do
         local x, y = unpack(position)
-        game:newModel("brick", {
-            size = {2, 1},
+        local angle = (love.math.random() < 0.5 and -1 or 1) * (0.01 + 0.09 * love.math.random())
+        game:newModel("wall", {
             position = {x + 1, y + 0.5},
-            angle = 0.05 * math.pi * (2 * love.math.random() - 1),
+            origin = {x + 1, y + 0.5},
+            blocks = {
+                [{x, y}] = "metal",
+                [{x + 1, y}] = "metal",
+            },
+            angle = angle,
             friction = 1,
             restitution = 0.5,
+            breakable = true,
         })
     end
 end
 
 function ScoreModel:_destroyBricks()
-    for i, brickModel in pairs(self._game:getModelsByType("brick")) do
-        self._game:removeModel(brickModel)
+    for i, wallModel in pairs(self._game:getModelsByType("wall")) do
+        if wallModel:isBreakable() then
+            self._game:removeModel(wallModel)
+        end
     end
 end
 

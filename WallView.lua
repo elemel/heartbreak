@@ -53,8 +53,9 @@ function WallView:draw()
         end
         local image = love.graphics.newImage(imageData)
 
+        local x0, y0 = model:getOrigin()
         self._sprite:setImage(image)
-        self._sprite:setOrigin(2 - x1, 2 - y1)
+        self._sprite:setOrigin(x0 + 1 - x1, y0 + 1 - y1)
 
         self._blockVersion = model:getBlockVersion()
     end
@@ -65,8 +66,14 @@ function WallView:draw()
 end
 
 function WallView:getBlockColor(x, y)
-    local heat = 0.5 * heart.math.fbm2(0.1 * x, 0.1 * y)
-    return heart.math.toByte4(heat + 0.1, heat, heat - 0.1, 1)
+    local model = self._model
+
+    local heat = heart.math.fbm2(0.1 * x, 0.1 * y)
+    if model:isBreakable() then
+        return heart.math.toByte4(heat + 0.5, heat, heat - 0.5, 1)
+    else
+        return heart.math.toByte4(0.5 * heat + 0.1, 0.5 * heat, 0.5 * heat - 0.1, 1)
+    end
 end
 
 return WallView

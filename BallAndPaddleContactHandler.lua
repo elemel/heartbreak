@@ -1,9 +1,12 @@
 local BallAndPaddleContactHandler = {}
 BallAndPaddleContactHandler.__index = BallAndPaddleContactHandler
 
-function BallAndPaddleContactHandler.new()
+function BallAndPaddleContactHandler.new(game)
     local handler = {}
     setmetatable(handler, BallAndPaddleContactHandler)
+
+    handler._game = game
+
     return handler
 end
 

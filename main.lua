@@ -1,6 +1,7 @@
 heart = require "heart"
 
 local BallAndPaddleContactHandler = require "BallAndPaddleContactHandler"
+local BallAndWallContactHandler = require "BallAndWallContactHandler"
 local BallModel = require "BallModel"
 local BallView = require "BallView"
 local BrickModel = require "BrickModel"
@@ -40,7 +41,8 @@ function love.load()
     game:setModelFactory("score", ScoreModel.new)
     game:setModelFactory("wall", WallModel.new)
 
-    game:setContactHandler("ball", "paddle", BallAndPaddleContactHandler.new())
+    game:setContactHandler("ball", "paddle", BallAndPaddleContactHandler.new(game))
+    game:setContactHandler("ball", "wall", BallAndWallContactHandler.new(game))
 
     game:setViewFactory("ball", BallView.new)
     game:setViewFactory("brick", BrickView.new)
@@ -67,19 +69,19 @@ function love.load()
     game:newModel("score")
 
     local blocks = {}
-    for y = -9, 8 do
+    for y = -10, 7 do
+        blocks[{-10, y}] = "metal"
         blocks[{-9, y}] = "metal"
-        blocks[{-8, y}] = "metal"
+        blocks[{8, y}] = "metal"
         blocks[{9, y}] = "metal"
-        blocks[{10, y}] = "metal"
     end
-    for x = -9, 10 do
+    for x = -10, 9 do
+        blocks[{x, 8}] = "metal"
         blocks[{x, 9}] = "metal"
-        blocks[{x, 10}] = "metal"
     end
     game:newModel("wall", {
-        friction = 1,
         blocks = blocks,
+        friction = 1,
     })
 
     game:newModel("paddle", {

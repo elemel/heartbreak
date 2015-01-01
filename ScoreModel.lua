@@ -45,7 +45,7 @@ function ScoreModel:update(dt)
         self:_destroyBalls()
         self._level = self._level + 1
         self:_createBricks()
-        for i = 1, math.max(ballCount, 1) do
+        for i = 1, math.max(ballCount, 2) do
             self:_createBall()
         end
         return
@@ -58,6 +58,7 @@ function ScoreModel:update(dt)
         self._score = 0
         self._nextExtraBallScore = 50
         self:_createBricks()
+        self:_createBall()
         self:_createBall()
         return
     end
